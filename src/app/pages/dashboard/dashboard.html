@@ -1,1 +1,83 @@
-<p>dashboard works!</p>
+<div class="dashboard-wrapper">
+
+  <div class="page-header">
+    <h2>Dashboard</h2>
+    <span>Visão geral do sistema</span>
+  </div>
+
+  <div class="cards-grid">
+    <div class="kcard kcard-blue">
+      <div class="kcard-label">Total cadastrados</div>
+      <div class="kcard-value">{{ resumo.totalCadastrados }}</div>
+      <i class="pi pi-car kcard-icon"></i>
+    </div>
+
+    <div class="kcard kcard-green">
+      <div class="kcard-label">Ativos</div>
+      <div class="kcard-value">{{ resumo.totalAtivos }}</div>
+      <i class="pi pi-check-circle kcard-icon"></i>
+    </div>
+
+    <div class="kcard kcard-red">
+      <div class="kcard-label">Expirados</div>
+      <div class="kcard-value">{{ resumo.totalExpirados }}</div>
+      <i class="pi pi-times-circle kcard-icon"></i>
+    </div>
+
+    <div class="kcard kcard-amber">
+      <div class="kcard-label">A vencer (5 dias)</div>
+      <div class="kcard-value">{{ resumo.totalAVencer }}</div>
+      <i class="pi pi-exclamation-circle kcard-icon"></i>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">
+      <span>Veículos cadastrados</span>
+    </div>
+    <p-table
+      [value]="veiculos"
+      [paginator]="true"
+      [rows]="10"
+      styleClass="p-datatable-sm"
+      [sortField]="'status'"
+      [sortOrder]="1">
+
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="placa">Placa <p-sortIcon field="placa" /></th>
+          <th pSortableColumn="modelo">Modelo <p-sortIcon field="modelo" /></th>
+          <th pSortableColumn="marca">Marca <p-sortIcon field="marca" /></th>
+          <th pSortableColumn="vaga">Vaga <p-sortIcon field="vaga" /></th>
+          <th pSortableColumn="proprietarioNome">Proprietário <p-sortIcon field="proprietarioNome" /></th>
+          <th pSortableColumn="proprietarioUnidade">Unidade <p-sortIcon field="proprietarioUnidade" /></th>
+          <th pSortableColumn="dataExpiracao">Expiração <p-sortIcon field="dataExpiracao" /></th>
+          <th pSortableColumn="status">Status <p-sortIcon field="status" /></th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-veiculo>
+        <tr>
+          <td><strong>{{ veiculo.placa }}</strong></td>
+          <td>{{ veiculo.modelo }}</td>
+          <td>{{ veiculo.marca }}</td>
+          <td>{{ veiculo.vaga }}</td>
+          <td>{{ veiculo.proprietarioNome }}</td>
+          <td>{{ veiculo.proprietarioUnidade }} — Bloco {{ veiculo.bloco }}</td>
+          <td>{{ veiculo.dataExpiracao | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <p-tag [value]="veiculo.status" [severity]="getSeverity(veiculo.status)" />
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #empty>
+        <tr>
+          <td colspan="8" class="empty-message">Nenhum veículo cadastrado.</td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+
+</div>

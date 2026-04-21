@@ -1,1 +1,63 @@
-<p>main-layout works!</p>
+<div class="layout-wrapper">
+
+  <div class="layout-sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">W</div>
+      <div>
+        <div class="logo-text">Westside</div>
+        <div class="logo-sub">Condomínio</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-menu">
+      <span class="menu-section">Menu</span>
+      <a routerLink="/dashboard" routerLinkActive="active" class="menu-item">
+        <i class="pi pi-home"></i>
+        <span>Dashboard</span>
+      </a>
+      <a routerLink="/proprietarios" routerLinkActive="active" class="menu-item">
+        <i class="pi pi-users"></i>
+        <span>Proprietários</span>
+      </a>
+      <a routerLink="/veiculos" routerLinkActive="active" class="menu-item">
+        <i class="pi pi-car"></i>
+        <span>Veículos</span>
+      </a>
+
+      <ng-container *ngIf="authService.isAdmin()">
+        <span class="menu-section">Admin</span>
+        <a routerLink="/usuarios" routerLinkActive="active" class="menu-item">
+          <i class="pi pi-user"></i>
+          <span>Usuários</span>
+        </a>
+        <a routerLink="/logs" routerLinkActive="active" class="menu-item">
+          <i class="pi pi-list"></i>
+          <span>Logs</span>
+        </a>
+      </ng-container>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="avatar">{{ authService.getLogin()?.substring(0, 2)?.toUpperCase() }}</div>
+      <div>
+        <div class="user-name">{{ authService.getLogin() }}</div>
+        <div class="user-role">{{ authService.isAdmin() ? 'Administrador' : 'Portaria' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout-main">
+    <div class="layout-topbar">
+      <span class="topbar-title">Westside Condomínio</span>
+        <div class="topbar-right">        
+          <span class="topbar-badge">{{ authService.getLogin()}}</span>
+          <p-button icon="pi pi-sign-out" [rounded]="true" [text]="true" severity="secondary" (onClick)="logout()" />
+        </div>
+    </div>
+
+    <div class="layout-content">
+      <router-outlet />
+    </div>
+  </div>
+
+</div>

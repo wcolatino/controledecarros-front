@@ -1,1 +1,116 @@
-<p>proprietarios works!</p>
+<div class="page-wrapper">
+
+  <p-toast />
+  <p-confirmdialog />
+
+  <div class="page-header">
+    <div>
+      <h2>Proprietários</h2>
+      <span>Gerencie os proprietários cadastrados</span>
+    </div>
+    <p-button label="Novo proprietário" icon="pi pi-plus" (onClick)="abrirNovo()" />
+  </div>
+
+  <div class="table-card">
+    <div class="table-toolbar">
+      <p-iconfield>
+        <p-inputicon styleClass="pi pi-search" />
+        <input pInputText placeholder="Buscar proprietário..." (input)="buscar($event)" />
+      </p-iconfield>
+    </div>
+
+    <p-table
+      #dt
+      [value]="proprietarios"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [globalFilterFields]="['nome', 'unidade', 'bloco', 'telefone']"
+      styleClass="p-datatable-sm"
+      [sortField]="'nome'"
+      [sortOrder]="1">
+
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="nome">Nome <p-sortIcon field="nome" /></th>
+          <th pSortableColumn="unidade">Unidade <p-sortIcon field="unidade" /></th>
+          <th pSortableColumn="bloco">Bloco <p-sortIcon field="bloco" /></th>
+          <th pSortableColumn="telefone">Telefone <p-sortIcon field="telefone" /></th>
+          <th style="width: 120px;">Ações</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-proprietario>
+        <tr>
+          <td>{{ proprietario.nome }}</td>
+          <td>{{ proprietario.unidade }}</td>
+          <td>
+            <span class="badge-bloco">Bloco {{ proprietario.bloco }}</span>
+          </td>
+          <td>{{ proprietario.telefone }}</td>
+          <td>
+            <div class="acoes">
+              <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="info" (onClick)="abrirEdicao(proprietario)" />
+              <p-button
+                *ngIf="authService.isAdmin()"
+                icon="pi pi-trash"
+                [rounded]="true"
+                [text]="true"
+                severity="danger"
+                (onClick)="confirmarDelete(proprietario)" />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #empty>
+        <tr>
+          <td colspan="5" class="empty-message">Nenhum proprietário encontrado.</td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+
+  <p-dialog
+    [(visible)]="dialogVisivel"
+    [header]="editando ? 'Editar proprietário' : 'Novo proprietário'"
+    [modal]="true"
+    [style]="{ width: '480px' }"
+    [draggable]="false">
+
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Nome</label>
+        <input pInputText [(ngModel)]="form.nome" placeholder="Nome completo" (keyup.enter)="salvar()" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Unidade</label>
+          <input pInputText [(ngModel)]="form.unidade" placeholder="Ex: 101" (keyup.enter)="salvar()" />
+        </div>
+        <div class="form-field">
+          <label>Bloco</label>
+          <p-select [(ngModel)]="form.bloco" [options]="blocos" optionLabel="label" optionValue="value" placeholder="Selecione" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>Telefone</label>
+        <input pInputText
+          [(ngModel)]="form.telefone"
+          mask="(00) 00000-0000"
+          placeholder="(61) 91234-5678"
+          (keyup.enter)="salvar()" />
+      </div>
+    </div>
+
+    <ng-template #footer>
+      <p-button label="Cancelar" severity="secondary" [text]="true" (onClick)="dialogVisivel = false" />
+      <p-button label="Salvar" icon="pi pi-check" (onClick)="salvar()" />
+    </ng-template>
+
+  </p-dialog>
+
+</div>

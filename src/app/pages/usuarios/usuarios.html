@@ -1,0 +1,90 @@
+<div class="page-wrapper">
+
+  <p-toast />
+
+  <div class="page-header">
+    <div>
+      <h2>Usuários</h2>
+      <span>Gerencie os usuários do sistema</span>
+    </div>
+    <p-button label="Novo usuário" icon="pi pi-plus" (onClick)="abrirNovo()" />
+  </div>
+
+  <div class="table-card">
+    <p-table
+      [value]="usuarios"
+      [paginator]="true"
+      [rows]="10"
+      styleClass="p-datatable-sm"
+      [sortField]="'login'"
+      [sortOrder]="1">
+
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="id">ID <p-sortIcon field="id" /></th>
+          <th pSortableColumn="login">Login <p-sortIcon field="login" /></th>
+          <th pSortableColumn="role">Perfil <p-sortIcon field="role" /></th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-usuario>
+        <tr>
+          <td>{{ usuario.id }}</td>
+          <td><strong>{{ usuario.login }}</strong></td>
+          <td>
+            <p-tag [value]="getLabelRole(usuario.role)" [severity]="getSeverityRole(usuario.role)" />
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #empty>
+        <tr>
+          <td colspan="3" class="empty-message">Nenhum usuário cadastrado.</td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+
+  <p-dialog
+    [(visible)]="dialogVisivel"
+    header="Novo usuário"
+    [modal]="true"
+    [style]="{ width: '420px' }"
+    [draggable]="false">
+
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Login</label>
+        <input pInputText [(ngModel)]="form.login" placeholder="Login do usuário" (keyup.enter)="salvar()" />
+      </div>
+
+      <div class="form-field">
+        <label>Senha</label>
+        <p-password
+          [(ngModel)]="form.senha"
+          placeholder="Senha"
+          [feedback]="false"
+          [toggleMask]="true"
+          (keyup.enter)="salvar()" />
+      </div>
+
+      <div class="form-field">
+        <label>Perfil</label>
+        <p-select
+          [(ngModel)]="form.role"
+          [options]="roles"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecione o perfil" />
+      </div>
+    </div>
+
+    <ng-template #footer>
+      <p-button label="Cancelar" severity="secondary" [text]="true" (onClick)="dialogVisivel = false" />
+      <p-button label="Salvar" icon="pi pi-check" (onClick)="salvar()" />
+    </ng-template>
+
+  </p-dialog>
+
+</div>

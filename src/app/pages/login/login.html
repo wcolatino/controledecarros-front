@@ -1,1 +1,37 @@
-<p>login works!</p>
+<p-toast />
+
+<div class="login-wrapper">
+  <div class="login-card">
+
+    <div class="login-header">
+      <div class="logo-icon">W</div>
+      <h1>Westside</h1>
+      <span>Condomínio — Sistema de Controle</span>
+    </div>
+
+    <div class="login-form">
+      <div class="form-field">
+        <label>Login</label>
+        <input pInputText [(ngModel)]="form.login" placeholder="Seu login" (keyup.enter)="entrar()" />
+      </div>
+
+      <div class="form-field">
+        <label>Senha</label>
+        <p-password
+          [(ngModel)]="form.senha"
+          placeholder="Sua senha"
+          [feedback]="false"
+          [toggleMask]="true"
+          (keyup.enter)="entrar()" />
+      </div>
+
+      <p-button
+        label="Entrar"
+        icon="pi pi-sign-in"
+        [loading]="carregando"
+        [fluid]="true"
+        (onClick)="entrar()" />
+    </div>
+
+  </div>
+</div>

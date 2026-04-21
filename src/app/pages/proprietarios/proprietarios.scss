@@ -1,0 +1,89 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 4px;
+  }
+
+  span {
+    font-size: 13px;
+    color: #94a3b8;
+  }
+}
+
+.table-card {
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.table-toolbar {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+
+  input {
+    width: 300px;
+  }
+}
+
+.badge-bloco {
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.acoes {
+  display: flex;
+  gap: 4px;
+}
+
+.empty-message {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 13px;
+  padding: 2rem !important;
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+  }
+
+  input, p-select {
+    width: 100%;
+  }
+}

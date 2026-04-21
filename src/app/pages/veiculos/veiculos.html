@@ -1,1 +1,141 @@
-<p>veiculos works!</p>
+<div class="page-wrapper">
+
+  <p-toast />
+  <p-confirmdialog />
+
+  <div class="page-header">
+    <div>
+      <h2>Veículos</h2>
+      <span>Gerencie os veículos cadastrados</span>
+    </div>
+    <p-button label="Novo veículo" icon="pi pi-plus" (onClick)="abrirNovo()" />
+  </div>
+
+  <div class="table-card">
+    <div class="table-toolbar">
+      <p-iconfield>
+        <p-inputicon styleClass="pi pi-search" />
+        <input pInputText placeholder="Buscar veículo..." (input)="buscar($event)" />
+      </p-iconfield>
+    </div>
+
+    <p-table
+      #dt
+      [value]="veiculos"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [globalFilterFields]="['placa', 'modelo', 'marca', 'proprietarioNome', 'proprietarioUnidade', 'status']"
+      styleClass="p-datatable-sm"
+      [sortField]="'placa'"
+      [sortOrder]="1">
+
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="placa">Placa <p-sortIcon field="placa" /></th>
+          <th pSortableColumn="modelo">Modelo <p-sortIcon field="modelo" /></th>
+          <th pSortableColumn="marca">Marca <p-sortIcon field="marca" /></th>
+          <th pSortableColumn="vaga">Vaga <p-sortIcon field="vaga" /></th>
+          <th pSortableColumn="proprietarioNome">Proprietário <p-sortIcon field="proprietarioNome" /></th>
+          <th pSortableColumn="proprietarioUnidade">Unidade <p-sortIcon field="proprietarioUnidade" /></th>
+          <th pSortableColumn="dataCadastro">Cadastro <p-sortIcon field="dataCadastro" /></th>
+          <th pSortableColumn="dataExpiracao">Expiração <p-sortIcon field="dataExpiracao" /></th>
+          <th pSortableColumn="status">Status <p-sortIcon field="status" /></th>
+          <th style="width: 80px;">Ações</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-veiculo>
+        <tr>
+          <td><strong>{{ veiculo.placa }}</strong></td>
+          <td>{{ veiculo.modelo }}</td>
+          <td>{{ veiculo.marca }}</td>
+          <td>{{ veiculo.vaga }}</td>
+          <td>{{ veiculo.proprietarioNome }}</td>
+          <td>{{ veiculo.proprietarioUnidade }} — Bloco {{ veiculo.bloco }}</td>
+          <td>{{ veiculo.dataCadastro | date:'dd/MM/yyyy' }}</td>
+          <td>{{ veiculo.dataExpiracao | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <p-tag [value]="veiculo.status" [severity]="getSeverity(veiculo.status)" />
+          </td>
+          <td>
+            <div class="acoes">
+              <p-button
+                *ngIf="authService.isAdmin()"
+                icon="pi pi-trash"
+                [rounded]="true"
+                [text]="true"
+                severity="danger"
+                (onClick)="confirmarDelete(veiculo)" />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #empty>
+        <tr>
+          <td colspan="10" class="empty-message">Nenhum veículo encontrado.</td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+
+  <p-dialog
+    [(visible)]="dialogVisivel"
+    header="Novo veículo"
+    [modal]="true"
+    [style]="{ width: '520px' }"
+    [draggable]="false">
+
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Proprietário</label>
+        <p-select
+          [(ngModel)]="proprietarioSelecionadoId"
+          [options]="proprietarios"
+          optionLabel="nome"
+          optionValue="id"
+          placeholder="Selecione o proprietário"
+          [filter]="true"
+          filterPlaceholder="Buscar proprietário" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Marca</label>
+          <input pInputText [(ngModel)]="form.marca" placeholder="Ex: Honda" (keyup.enter)="salvar()" />
+        </div>
+        <div class="form-field">
+          <label>Modelo</label>
+          <input pInputText [(ngModel)]="form.modelo" placeholder="Ex: Civic" (keyup.enter)="salvar()" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label>Placa</label>
+          <input
+            pInputText
+            [(ngModel)]="form.placa"
+            [mask]="'AAA-0000||AAA0A00'"
+            [dropSpecialCharacters]="false"
+            placeholder="Ex: ABC-1234 ou ABC1D23"
+            (keyup.enter)="salvar()"
+            style="text-transform: uppercase" />
+        </div>
+        <div class="form-field">
+          <label>Vaga</label>
+          <input pInputText type="number" [(ngModel)]="form.vaga" placeholder="Ex: 10" (keyup.enter)="salvar()" />
+        </div>
+      </div>
+    </div>
+
+    <ng-template #footer>
+      <p-button label="Cancelar" severity="secondary" [text]="true" (onClick)="dialogVisivel = false" />
+      <p-button label="Salvar" icon="pi pi-check" (onClick)="salvar()" />
+    </ng-template>
+
+  </p-dialog>
+
+</div>

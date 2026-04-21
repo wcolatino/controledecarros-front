@@ -1,1 +1,78 @@
-<p>logs works!</p>
+<div class="page-wrapper">
+
+  <p-toast />
+
+  <div class="page-header">
+    <div>
+      <h2>Logs</h2>
+      <span>Histórico de ações realizadas no sistema</span>
+    </div>
+  </div>
+
+  <div class="filtros">
+    <div class="filtro-field">
+      <label>Filtrar por ação</label>
+      <p-select
+        [(ngModel)]="acaoSelecionada"
+        [options]="acoes"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Todas as ações"
+        (onChange)="filtrarPorAcao()" />
+    </div>
+    <div class="filtro-field">
+      <label>Filtrar por entidade</label>
+      <p-select
+        [(ngModel)]="entidadeSelecionada"
+        [options]="entidades"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Todas as entidades"
+        (onChange)="filtrarPorEntidade()" />
+    </div>
+  </div>
+
+  <div class="table-card">
+    <p-table
+      [value]="logs"
+      [paginator]="true"
+      [rows]="15"
+      [rowsPerPageOptions]="[15, 30, 50]"
+      styleClass="p-datatable-sm"
+      [sortField]="'dataHora'"
+      [sortOrder]="-1">
+
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="dataHora">Data/Hora <p-sortIcon field="dataHora" /></th>
+          <th>Usuário</th>
+          <th>Ação</th>
+          <th>Entidade</th>
+          <th>ID</th>
+          <th>Detalhes</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-log>
+        <tr>
+          <td>{{ log.dataHora | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+          <td><strong>{{ log.usuarioLogin }}</strong></td>
+          <td>
+            <p-tag [value]="getLabelAcao(log.acao)" [severity]="getSeverityAcao(log.acao)" />
+          </td>
+          <td>{{ log.entidade }}</td>
+          <td>{{ log.entidadeId }}</td>
+          <td class="detalhes">{{ log.detalhes }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template #empty>
+        <tr>
+          <td colspan="6" class="empty-message">Nenhum log encontrado.</td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+
+</div>
